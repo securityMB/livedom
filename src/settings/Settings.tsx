@@ -1,5 +1,6 @@
 import UntypedEditor, { EditorProps } from "@monaco-editor/react";
 import type { FunctionComponent } from "preact";
+import { useRef } from "preact/hooks";
 import { useConfig } from "../ConfigContext";
 import { builtinParsers } from "./builtin-parsers";
 
@@ -10,6 +11,7 @@ export type MonacoEditorRef = Parameters<
 
 export function Settings() {
   const config = useConfig();
+  const editorRef = useRef<MonacoEditorRef | null>(null);
   return (
     <details open class="border rounded-md px-4 py-1">
       <summary class="font-bold text-lg cursor-pointer border-b -mx-4 px-4">
@@ -49,22 +51,25 @@ export function Settings() {
             })}
           </select>
         </label>
+        <Editor
+          onMount={(editor) => (editorRef.current = editor)}
+          height="30vh"
+          language="javascript"
+          options={{ minimap: { enabled: false } }}
+          value={config.parser}
+        />
+        <div>
+          <button
+            onClick={() =>
+              config.setParser(editorRef.current?.getValue() ?? "")
+            }
+            type="button"
+            class="bg-slate-100 border rounded p-2 uppercase tracking-wide font-semibold hover:bg-slate-300"
+          >
+            Update parser
+          </button>
+        </div>
       </div>
     </details>
-  );
-}
-
-export function MonacoEditor() {
-  return (
-    <Editor
-      // onMount={(editor) => {
-      //   if (valueGetter) {
-      //     valueGetter.getValue = () => editor.getValue();
-      //   }
-      // }}
-      height="30vh"
-      language="javascript"
-      options={{ minimap: { enabled: false } }}
-    />
   );
 }
