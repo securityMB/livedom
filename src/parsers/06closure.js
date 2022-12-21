@@ -16,8 +16,6 @@ class ClosureSanitizer {
     const sanitizer = new goog.html.sanitizer.HtmlSanitizer.Builder().build();
     const sanitized = sanitizer.sanitize(s);
     const node = goog.dom.safeHtmlToNode(sanitized);
-    const frag = document.createDocumentFragment();
-    frag.append(node);
-    display(frag);
+    display(node);
   }
 }
