@@ -58,16 +58,29 @@ export function Settings() {
           options={{ minimap: { enabled: false } }}
           value={config.parser}
         />
-        <div>
+        <div class="flex gap-2 items-center">
           <button
             onClick={() =>
               config.setParser(editorRef.current?.getValue() ?? "")
             }
             type="button"
-            class="bg-slate-100 border rounded p-2 uppercase tracking-wide font-semibold hover:bg-slate-300"
+            class="bg-gray-300 border-gray-700 border rounded px-2 py-1 uppercase tracking-wide font-semibold hover:bg-opacity-50"
           >
             Update parser
           </button>
+          <button
+            onClick={() =>
+              config.setParser(editorRef.current?.getValue() ?? "")
+            }
+            type="button"
+            class="bg-gray-300 border-gray-700 border rounded px-2 py-1 uppercase tracking-wide font-semibold hover:bg-opacity-50"
+          >
+            Save as custom parser
+          </button>
+          <label class="flex items-center gap-1">
+            Name
+            <input type="text" placeholder="Custom parser name" />
+          </label>
         </div>
       </div>
     </details>
