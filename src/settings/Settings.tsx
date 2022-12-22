@@ -51,10 +51,10 @@ export function Settings() {
             })}
           </select>
         </label>
-        <div class="border rounded py-2 px-0.5">
+        <div class="border rounded py-2 px-0.5 resize">
           <Editor
             onMount={(editor) => (editorRef.current = editor)}
-            height="30vh"
+            className="min-h-[300px]"
             language="javascript"
             options={{ minimap: { enabled: false }, lineNumbers: "off" }}
             value={config.parser}
