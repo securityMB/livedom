@@ -5,9 +5,6 @@ type Detail = [stuff: string | Node, title?: string];
 
 type Props = { input: string; parser: string };
 export function Output({ input, parser }: Props) {
-  //     <ul class="font-mono text-gray-400 leading-5">
-  //     {/* <TreeNode node={tree} firstNode /> */}
-  //   </ul>
   const [outputs, setOutputs] = useState<Detail[]>([]);
 
   // clear outputs when input change
@@ -31,7 +28,7 @@ export function Output({ input, parser }: Props) {
           <div class="flex flex-col gap-2 border-b pb-2">
             {title && <div class="font-extrabold text-lg">{title}</div>}
             {typeof toDisplay === "string" ? (
-              toDisplay
+              <div class="font-mono">{toDisplay}</div>
             ) : (
               <ul class="font-mono text-gray-400 leading-5">
                 <TreeNode node={toDisplay} firstNode />
