@@ -75,12 +75,9 @@ export function Settings() {
             type="button"
             class="bg-gray-300 border-gray-700 border rounded px-2 py-1 uppercase tracking-wide font-semibold hover:bg-opacity-50"
           >
-            Save as custom pearser
+            Save as custom parser
           </button>
-          <label class="flex items-center gap-1">
-            Name
-            <input type="text" placeholder="Custom parser name" />
-          </label>
+          <input type="text" placeholder="Custom parser name" />
         </div>
       </div>
     </details>
