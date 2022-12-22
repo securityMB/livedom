@@ -51,13 +51,15 @@ export function Settings() {
             })}
           </select>
         </label>
-        <Editor
-          onMount={(editor) => (editorRef.current = editor)}
-          height="30vh"
-          language="javascript"
-          options={{ minimap: { enabled: false } }}
-          value={config.parser}
-        />
+        <div class="border rounded py-2 px-0.5">
+          <Editor
+            onMount={(editor) => (editorRef.current = editor)}
+            height="30vh"
+            language="javascript"
+            options={{ minimap: { enabled: false }, lineNumbers: "off" }}
+            value={config.parser}
+          />
+        </div>
         <div class="flex gap-2 items-center">
           <button
             onClick={() =>
