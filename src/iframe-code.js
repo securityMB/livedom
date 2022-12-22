@@ -6,5 +6,7 @@ function display(...args) {
 const parserCode = document.getElementById("parser-code").text;
 const klazz = eval(`(${parserCode})`);
 const instance = new klazz();
-instance.init();
+if (typeof instance.init === "function") {
+  instance.init();
+}
 window.parser = instance;
