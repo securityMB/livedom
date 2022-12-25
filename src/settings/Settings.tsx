@@ -1,6 +1,6 @@
 import UntypedEditor, { EditorProps } from "@monaco-editor/react";
 import type { FunctionComponent } from "preact";
-import { useEffect, useRef } from "preact/hooks";
+import { useRef } from "preact/hooks";
 import { useConfig } from "../ConfigContext";
 import { builtinParsers } from "./builtin-parsers";
 
