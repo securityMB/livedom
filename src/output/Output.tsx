@@ -12,7 +12,6 @@ export function Output({ input, parser }: Props) {
 
   useEffect(() => {
     const listener = ((ev: CustomEvent<Detail>) => {
-      console.log(ev.detail);
       setOutputs((prev) => [...prev, ev.detail]);
     }) as EventListener;
     window.addEventListener("display", listener);

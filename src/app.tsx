@@ -8,7 +8,7 @@ function newIframe(parserCode: string) {
   Function(parserCode); // verify for syntax errors
   const iframe = document.createElement("iframe");
   iframe.className = "w-0 h-0";
-  iframe.onload = () => {
+  iframe.addEventListener("load", () => {
     const parserCodeElement = document.createElement("script");
     parserCodeElement.id = "parser-code";
     parserCodeElement.type = "parser-code";
@@ -18,15 +18,17 @@ function newIframe(parserCode: string) {
     scriptElement.text = iframeCode;
 
     iframe.contentDocument!.body.append(parserCodeElement, scriptElement);
-  };
+  });
   document.body.appendChild(iframe);
 
   return iframe;
 }
 export function App() {
   const { parser } = useConfig();
-  const [input, setInput] = useState("");
+  const [input, setInput] = useState(() => localStorage.getItem("input") ?? "");
+
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   useEffect(() => {
     iframeRef.current = newIframe(parser);
     return () => {
@@ -36,8 +38,30 @@ export function App() {
   }, [parser]);
 
   useEffect(() => {
-    (iframeRef.current?.contentWindow as any)?.parser.parse(input);
+    const maxTries = 10;
+    let tries = 0;
+    const f = async () => {
+      while (tries++ < maxTries) {
+        try {
+          (iframeRef.current?.contentWindow as any)?.parser.parse(input);
+          return;
+        } catch {}
+        await new Promise((r) => setTimeout(r, 333));
+      }
+    };
+    f();
   }, [input, parser]);
+
+  useEffect(() => {
+    const listener = () => {
+      if (textareaRef.current) {
+        localStorage.setItem("input", textareaRef.current.value);
+      }
+    };
+    window.addEventListener("beforeunload", listener);
+
+    return () => window.removeEventListener("beforeunload", listener);
+  }, []);
 
   return (
     <div class="mx-4 flex flex-col h-full gap-4">
@@ -57,7 +81,9 @@ export function App() {
         and sanitizers.
       </p>
       <textarea
+        ref={textareaRef}
         value={input}
+        autofocus
         onInput={(ev) => setInput(ev.currentTarget.value)}
       ></textarea>
 

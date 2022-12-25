@@ -4,9 +4,13 @@ function display(...args) {
 }
 
 const parserCode = document.getElementById("parser-code").text;
-const klazz = eval(`(${parserCode})`);
-const instance = new klazz();
-if (typeof instance.init === "function") {
-  instance.init();
+try {
+  const klazz = eval(`(${parserCode})`);
+  const instance = new klazz();
+  if (typeof instance.init === "function") {
+    instance.init();
+  }
+  window.parser = instance;
+} catch (e) {
+  console.error(e);
 }
-window.parser = instance;

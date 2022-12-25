@@ -1,6 +1,6 @@
 import UntypedEditor, { EditorProps } from "@monaco-editor/react";
 import type { FunctionComponent } from "preact";
-import { useRef } from "preact/hooks";
+import { useEffect, useRef } from "preact/hooks";
 import { useConfig } from "../ConfigContext";
 import { builtinParsers } from "./builtin-parsers";
 
@@ -12,6 +12,7 @@ export type MonacoEditorRef = Parameters<
 export function Settings() {
   const config = useConfig();
   const editorRef = useRef<MonacoEditorRef | null>(null);
+
   return (
     <details open class="border rounded-md px-4 py-1">
       <summary class="font-bold text-lg cursor-pointer border-b -mx-4 px-4">
