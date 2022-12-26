@@ -50,7 +50,6 @@ function getConfig<T extends keyof ConfigGetter>(
 type Props = { children: ComponentChildren };
 export function ConfigContextProvider({ children }: Props) {
   const shareData = getShareDataFromUrl();
-  console.log(shareData);
 
   const [withNamespaces, setWithNamespaces] = useState(() =>
     getConfig("withNamespaces", true)
@@ -61,6 +60,10 @@ export function ConfigContextProvider({ children }: Props) {
   const [parser, setParser] = useState(
     shareData?.parser ?? getConfig("parser", builtinParsers[0]!.code)
   );
+
+  useEffect(() => {
+    location.hash = "";
+  }, []);
 
   // Save config before unload
   useEffect(() => {
