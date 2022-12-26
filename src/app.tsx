@@ -3,6 +3,7 @@ import { useConfig } from "./ConfigContext";
 import { Settings } from "./settings/Settings";
 import iframeCode from "./iframe-code.js?raw";
 import { Output } from "./output/Output";
+import { getShareDataFromUrl } from "./share-url";
 
 function newIframe(parserCode: string) {
   Function(parserCode); // verify for syntax errors
@@ -25,10 +26,15 @@ function newIframe(parserCode: string) {
 }
 export function App() {
   const { parser } = useConfig();
-  const [input, setInput] = useState(() => localStorage.getItem("input") ?? "");
+  const shareData = getShareDataFromUrl();
+
+  const [input, setInput] = useState(
+    () => shareData?.input ?? localStorage.getItem("input") ?? ""
+  );
 
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+
   useEffect(() => {
     iframeRef.current = newIframe(parser);
     return () => {
@@ -89,7 +95,7 @@ export function App() {
 
       <Output input={input} parser={parser} />
 
-      <Settings />
+      <Settings input={input} />
     </div>
   );
 }

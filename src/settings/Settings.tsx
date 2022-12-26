@@ -3,15 +3,17 @@ import type { FunctionComponent } from "preact";
 import { useRef } from "preact/hooks";
 import { useConfig } from "../ConfigContext";
 import { builtinParsers } from "./builtin-parsers";
+import { generateShareUrl } from "../share-url";
 
 const Editor = UntypedEditor as FunctionComponent<EditorProps>;
 export type MonacoEditorRef = Parameters<
   NonNullable<EditorProps["onMount"]>
 >["0"];
 
-export function Settings() {
+export function Settings({ input }: { input: string }) {
   const config = useConfig();
   const editorRef = useRef<MonacoEditorRef | null>(null);
+  const shareUrl = generateShareUrl({ input, parser: config.parser });
 
   return (
     <details open class="border rounded-md px-4 py-1">
@@ -19,6 +21,25 @@ export function Settings() {
         Settings
       </summary>
       <div class="flex flex-col gap-2 p-4">
+        <div class="flex items-center gap-2">
+          <div>
+            Share URL (
+            <button
+              type="button"
+              class="hover:text-gray-500 active:text-gray-200"
+              onClick={() => navigator.clipboard.writeText(shareUrl)}
+            >
+              copy
+            </button>
+            )
+          </div>
+          <input
+            type="text"
+            class="flex-1 text-gray-400"
+            readonly
+            value={shareUrl}
+          />
+        </div>
         <label class="flex items-center gap-2">
           <input
             type="checkbox"
