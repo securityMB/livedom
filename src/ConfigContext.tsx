@@ -50,6 +50,7 @@ function getConfig<T extends keyof ConfigGetter>(
 type Props = { children: ComponentChildren };
 export function ConfigContextProvider({ children }: Props) {
   const shareData = getShareDataFromUrl();
+  console.log(shareData);
 
   const [withNamespaces, setWithNamespaces] = useState(() =>
     getConfig("withNamespaces", true)
@@ -58,7 +59,7 @@ export function ConfigContextProvider({ children }: Props) {
     getConfig("ignoreEmptyTextNodes", false)
   );
   const [parser, setParser] = useState(
-    getConfig("parser", shareData?.parser ?? builtinParsers[0]!.code)
+    shareData?.parser ?? getConfig("parser", builtinParsers[0]!.code)
   );
 
   // Save config before unload
