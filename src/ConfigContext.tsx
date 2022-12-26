@@ -1,6 +1,7 @@
 import { ComponentChildren, createContext } from "preact";
 import { StateUpdater, useContext, useEffect, useState } from "preact/hooks";
 import { builtinParsers } from "./settings/builtin-parsers";
+import { getShareDataFromUrl } from "./share-url";
 
 type ConfigGetter = {
   withNamespaces: boolean;
@@ -48,6 +49,8 @@ function getConfig<T extends keyof ConfigGetter>(
 
 type Props = { children: ComponentChildren };
 export function ConfigContextProvider({ children }: Props) {
+  const shareData = getShareDataFromUrl();
+
   const [withNamespaces, setWithNamespaces] = useState(() =>
     getConfig("withNamespaces", true)
   );
@@ -55,7 +58,7 @@ export function ConfigContextProvider({ children }: Props) {
     getConfig("ignoreEmptyTextNodes", false)
   );
   const [parser, setParser] = useState(
-    getConfig("parser", builtinParsers[0]!.code)
+    getConfig("parser", shareData?.parser ?? builtinParsers[0]!.code)
   );
 
   // Save config before unload
