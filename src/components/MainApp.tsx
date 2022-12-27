@@ -99,7 +99,11 @@ export function MainApp() {
     <div class="mx-4 flex flex-col h-full gap-4">
       <Hero />
       <InputBox input={input} setInput={setInput} />
-      <Outputs outputs={outputs} />
+      <Outputs
+        outputs={outputs}
+        ignoreEmptyTextNodes={globalState.ignoreEmptyTextNodes}
+        withNamespaces={globalState.withNamespaces}
+      />
 
       <Settings {...globalStateForSettings(globalState)} shareUrl={shareUrl} />
     </div>

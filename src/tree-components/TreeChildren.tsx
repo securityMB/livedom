@@ -13,7 +13,15 @@ function getContentDocument(node: Node): Document | null {
   }
 }
 
-export function TreeChildren({ node }: { node: Node }) {
+export function TreeChildren({
+  node,
+  withNamespaces,
+  ignoreEmptyTextNodes,
+}: {
+  node: Node;
+  withNamespaces: boolean;
+  ignoreEmptyTextNodes: boolean;
+}) {
   const hasChildNodes = node.hasChildNodes();
   const content = (node as HTMLTemplateElement).content as
     | DocumentFragment
@@ -29,18 +37,31 @@ export function TreeChildren({ node }: { node: Node }) {
   return (
     <ul class="ml-4">
       {Array.from(node.childNodes, (child, index) => (
-        <TreeNode node={child} key={getKeyForChildNode(child, index)} />
+        <TreeNode
+          node={child}
+          key={getKeyForChildNode(child, index)}
+          ignoreEmptyTextNodes={ignoreEmptyTextNodes}
+          withNamespaces={withNamespaces}
+        />
       ))}
       {hasContent && (
         <ul class="ml-4">
           <TreeDocumentFragment description="template content" />
-          <TreeChildren node={content!} />
+          <TreeChildren
+            node={content!}
+            ignoreEmptyTextNodes={ignoreEmptyTextNodes}
+            withNamespaces={withNamespaces}
+          />
         </ul>
       )}
       {hasContentDocument && (
         <ul class="ml-4">
           <TreeDocumentFragment description="iframe document" />
-          <TreeChildren node={contentDocument!} />
+          <TreeChildren
+            node={contentDocument!}
+            ignoreEmptyTextNodes={ignoreEmptyTextNodes}
+            withNamespaces={withNamespaces}
+          />
         </ul>
       )}
     </ul>

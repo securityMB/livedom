@@ -2,8 +2,13 @@ import { Fragment } from "preact";
 import { getShortNamespace } from "../functions/getShortNamespace";
 import { asciiLowerCase } from "../functions/asciiLowerCase";
 
-export function TreeElement({ node }: { node: Element }) {
-  const withNamespaces = true;
+export function TreeElement({
+  node,
+  withNamespaces,
+}: {
+  node: Element;
+  withNamespaces: boolean;
+}) {
   const namespace = withNamespaces
     ? `${getShortNamespace(node.namespaceURI ?? "")} `
     : "";

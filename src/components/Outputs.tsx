@@ -2,8 +2,12 @@ import { memo } from "preact/compat";
 import { TreeNode } from "../tree-components/TreeNode";
 import type { Output } from "../types";
 
-type Props = { outputs: Output[] };
-function Outputs({ outputs }: Props) {
+type Props = {
+  outputs: Output[];
+  ignoreEmptyTextNodes: boolean;
+  withNamespaces: boolean;
+};
+function Outputs({ outputs, ignoreEmptyTextNodes, withNamespaces }: Props) {
   return (
     <div class="flex flex-col">
       {outputs.map(({ content, title }) => {
@@ -14,7 +18,12 @@ function Outputs({ outputs }: Props) {
               <div class="font-mono">{content}</div>
             ) : (
               <ul class="font-mono text-gray-400 leading-5">
-                <TreeNode node={content} firstNode />
+                <TreeNode
+                  node={content}
+                  firstNode
+                  ignoreEmptyTextNodes={ignoreEmptyTextNodes}
+                  withNamespaces={withNamespaces}
+                />
               </ul>
             )}
           </div>
