@@ -5,7 +5,9 @@ export function useGlobalState(
   defaultValues: GlobalState
 ): GlobalStateWithUpdaters {
   const [input, setInput] = useState(defaultValues.input);
-  const [outputs, setOutputs] = useState<Output[]>(defaultValues.outputs);
+  const [outputs, setOutputs] = useState<(Output | Output[])[]>(
+    defaultValues.outputs
+  );
   const [withNamespaces, setWithNamespaces] = useState(
     defaultValues.withNamespaces
   );
