@@ -3,7 +3,7 @@
 //   | "PROCESSING_INSTRUCTION_NODE"
 //   | "DOCUMENT_FRAGMENT_NODE";
 
-import { classNames } from "../utils";
+import { classNames } from "../functions/classNames";
 import { TreeChildren } from "./TreeChildren";
 import { TreeComment } from "./TreeComment";
 import { TreeDoctype } from "./TreeDoctype";
