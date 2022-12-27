@@ -2,7 +2,7 @@ import { TreeDocumentFragment } from "./TreeDocumentFragment";
 import { TreeNode } from "./TreeNode";
 
 function getKeyForChildNode(child: ChildNode, index: number) {
-  return `${child.nodeName} ${index}`;
+  return `${child.nodeName} ${child.nodeType} ${index}`;
 }
 
 function getContentDocument(node: Node): Document | null {
