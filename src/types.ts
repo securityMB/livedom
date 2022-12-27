@@ -8,7 +8,7 @@ export type Output = {
 export type GlobalState = {
   input: string;
   parserCode: string;
-  outputs: Output[];
+  outputs: (Output | Output[])[];
   withNamespaces: boolean;
   ignoreEmptyTextNodes: boolean;
 };
@@ -33,4 +33,9 @@ export type ParserMenuItem = {
 
 export type LocalStorageValues = Omit<GlobalState, "outputs">;
 
-export type DisplayDetail = [Node | string, (string | undefined)?];
+export type DisplayClassicArgs = [Node | string, (string | undefined)?];
+//export type DisplayRowArgs = {content: Node | string, title?: string | undefined}[];
+export type DisplayRowArgs = (Node | string | DisplayClassicArgs)[];
+export type DisplayDetail =
+  | { type: "classic"; args: DisplayClassicArgs }
+  | { type: "row"; args: DisplayRowArgs };

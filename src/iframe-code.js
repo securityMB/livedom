@@ -1,5 +1,13 @@
 function display(...args) {
-  const event = new CustomEvent("display", { detail: args });
+  const event = new CustomEvent("display", {
+    detail: { args, type: "classic" },
+  });
+  parent.dispatchEvent(event);
+}
+function displayRow(...args) {
+  const event = new CustomEvent("display", {
+    detail: { args, type: "row" },
+  });
   parent.dispatchEvent(event);
 }
 
