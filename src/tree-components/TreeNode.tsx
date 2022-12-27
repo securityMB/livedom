@@ -16,8 +16,6 @@ type Props = {
   description?: string | undefined;
 };
 
-const emptyFragment = <></>;
-
 export function TypedNode({ node, description, withNamespaces }: Props) {
   switch (node.nodeType) {
     case node.ELEMENT_NODE:
@@ -42,8 +40,22 @@ export function TypedNode({ node, description, withNamespaces }: Props) {
       return <>&lt;!DOCTYPE {node.nodeName}&gt;</>;
     case node.DOCUMENT_FRAGMENT_NODE:
       return <TreeDocumentFragment />;
+    case node.CDATA_SECTION_NODE:
+      return (
+        <>
+          #CDATA: &quot;<span class="text-black">{node.nodeValue}</span>&quot;
+        </>
+      );
+    case node.PROCESSING_INSTRUCTION_NODE:
+      return (
+        <>
+          &lt;?{node.nodeName} {node.nodeValue}?&gt;
+        </>
+      );
   }
-  return emptyFragment;
+  throw new Error(
+    `Not implemented node type: ${node.nodeType} ${node.nodeName}`
+  );
 }
 
 export function TreeNode({
@@ -58,7 +70,7 @@ export function TreeNode({
     node.nodeType === node.TEXT_NODE &&
     (node.nodeValue ?? "").trim() === "";
 
-  if (ignoreThisNode) return emptyFragment;
+  if (ignoreThisNode) return <></>;
 
   return (
     <li
