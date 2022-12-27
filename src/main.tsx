@@ -1,12 +1,6 @@
 import { render } from "preact";
-import { App } from "./app";
 import "./index.css";
 import "@fontsource/bebas-neue";
-import { ConfigContextProvider } from "./ConfigContext";
+import { MainApp } from "./components/MainApp";
 
-render(
-  <ConfigContextProvider>
-    <App />
-  </ConfigContextProvider>,
-  document.getElementById("app") as HTMLElement
-);
+render(<MainApp />, document.getElementById("app") as HTMLElement);

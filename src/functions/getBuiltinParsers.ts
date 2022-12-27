@@ -1,15 +1,15 @@
-type Parser = {
-  name: string;
-  code: string;
-};
+import type { ParserMenuItem } from "../types";
 
 const EXPECTED_FIRST_LINE = "// name: ";
-function getBuiltinParsers(): Parser[] {
+let builtinParsers: ParserMenuItem[] | null = null;
+export function getBuiltinParsers(): ParserMenuItem[] {
+  if (builtinParsers) return builtinParsers;
+
   const parsers = Object.entries(
     import.meta.glob("../parsers/**/*.js", { eager: true, as: "raw" })
   );
 
-  return parsers
+  builtinParsers = parsers
     .sort(([name1], [name2]) => name1.localeCompare(name2))
     .map(([originalName, code]) => {
       let name = originalName;
@@ -19,6 +19,6 @@ function getBuiltinParsers(): Parser[] {
       }
       return { name, code };
     });
-}
 
-export const builtinParsers = getBuiltinParsers();
+  return builtinParsers;
+}

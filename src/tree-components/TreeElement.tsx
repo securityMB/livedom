@@ -1,24 +1,14 @@
 import { Fragment } from "preact";
-import { useConfig } from "../ConfigContext";
+import { getShortNamespace } from "../functions/getShortNamespace";
+import { asciiLowerCase } from "../functions/asciiLowerCase";
 
-const asciiLowerCase = (s: string) =>
-  s.replace(/[A-Z]+/g, (r) => r.toLowerCase());
-
-const getShortNamespace = (namespace: string) => {
-  switch (namespace) {
-    case "http://www.w3.org/1999/xhtml":
-      return "html";
-    case "http://www.w3.org/2000/svg":
-      return "svg";
-    case "http://www.w3.org/1998/Math/MathML":
-      return "math";
-    default:
-      return namespace;
-  }
-};
-
-export function TreeElement({ node }: { node: Element }) {
-  const { withNamespaces } = useConfig();
+export function TreeElement({
+  node,
+  withNamespaces,
+}: {
+  node: Element;
+  withNamespaces: boolean;
+}) {
   const namespace = withNamespaces
     ? `${getShortNamespace(node.namespaceURI ?? "")} `
     : "";

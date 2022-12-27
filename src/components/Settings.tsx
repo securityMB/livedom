@@ -1,19 +1,20 @@
 import UntypedEditor, { EditorProps } from "@monaco-editor/react";
 import type { FunctionComponent } from "preact";
 import { useRef } from "preact/hooks";
-import { useConfig } from "../ConfigContext";
-import { builtinParsers } from "./builtin-parsers";
-import { generateShareUrl } from "../share-url";
+import { getBuiltinParsers } from "../functions/getBuiltinParsers";
+import type { GlobalStateWithUpdaters } from "../types";
 
 const Editor = UntypedEditor as FunctionComponent<EditorProps>;
 export type MonacoEditorRef = Parameters<
   NonNullable<EditorProps["onMount"]>
 >["0"];
 
-export function Settings({ input }: { input: string }) {
-  const config = useConfig();
+type Props = Omit<
+  GlobalStateWithUpdaters,
+  "outputs" | "setOutputs" | "input" | "setInput"
+> & { shareUrl: string };
+export default function Settings(props: Props) {
   const editorRef = useRef<MonacoEditorRef | null>(null);
-  const shareUrl = generateShareUrl({ input, parser: config.parser });
 
   return (
     <details open class="border rounded-md px-4 py-1">
@@ -27,7 +28,7 @@ export function Settings({ input }: { input: string }) {
             <button
               type="button"
               class="hover:text-gray-500 active:text-gray-200"
-              onClick={() => navigator.clipboard.writeText(shareUrl)}
+              onClick={() => navigator.clipboard.writeText(props.shareUrl)}
             >
               copy
             </button>
@@ -37,23 +38,23 @@ export function Settings({ input }: { input: string }) {
             type="text"
             class="flex-1 text-gray-400"
             readonly
-            value={shareUrl}
+            value={props.shareUrl}
           />
         </div>
         <label class="flex items-center gap-2">
           <input
             type="checkbox"
-            checked={config.withNamespaces}
-            onInput={(ev) => config.setWithNamespaces(ev.currentTarget.checked)}
+            checked={props.withNamespaces}
+            onInput={(ev) => props.setWithNamespaces(ev.currentTarget.checked)}
           />
           Show namespaces
         </label>
         <label class="flex items-center gap-2">
           <input
             type="checkbox"
-            checked={config.ignoreEmptyTextNodes}
+            checked={props.ignoreEmptyTextNodes}
             onInput={(ev) =>
-              config.setIgnoreEmptyTextNodes(ev.currentTarget.checked)
+              props.setIgnoreEmptyTextNodes(ev.currentTarget.checked)
             }
           />
           Ignore empty text nodes
@@ -61,10 +62,10 @@ export function Settings({ input }: { input: string }) {
         <label class="flex items-center gap-2">
           Parser:
           <select
-            value={config.parser}
-            onChange={(ev) => config.setParser(ev.currentTarget.value)}
+            value={props.parserCode}
+            onChange={(ev) => props.setParserCode(ev.currentTarget.value)}
           >
-            {builtinParsers.map(({ name, code }) => {
+            {getBuiltinParsers().map(({ name, code }) => {
               return (
                 <option key={name + code} value={code}>
                   {name}
@@ -79,13 +80,13 @@ export function Settings({ input }: { input: string }) {
             className="min-h-[300px]"
             language="javascript"
             options={{ minimap: { enabled: false }, lineNumbers: "off" }}
-            value={config.parser}
+            value={props.parserCode}
           />
         </div>
         <div class="flex gap-2 items-center">
           <button
             onClick={() =>
-              config.setParser(editorRef.current?.getValue() ?? "")
+              props.setParserCode(editorRef.current?.getValue() ?? "")
             }
             type="button"
             class="bg-gray-300 border-gray-700 border rounded px-2 py-1 uppercase tracking-wide font-semibold hover:bg-opacity-50"
@@ -94,7 +95,7 @@ export function Settings({ input }: { input: string }) {
           </button>
           <button
             onClick={() =>
-              config.setParser(editorRef.current?.getValue() ?? "")
+              props.setParserCode(editorRef.current?.getValue() ?? "")
             }
             type="button"
             class="bg-gray-300 border-gray-700 border rounded px-2 py-1 uppercase tracking-wide font-semibold hover:bg-opacity-50"
