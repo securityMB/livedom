@@ -1,5 +1,4 @@
 import { Fragment } from "preact";
-import { useConfig } from "../ConfigContext";
 
 const asciiLowerCase = (s: string) =>
   s.replace(/[A-Z]+/g, (r) => r.toLowerCase());
@@ -18,7 +17,7 @@ const getShortNamespace = (namespace: string) => {
 };
 
 export function TreeElement({ node }: { node: Element }) {
-  const { withNamespaces } = useConfig();
+  const withNamespaces = true;
   const namespace = withNamespaces
     ? `${getShortNamespace(node.namespaceURI ?? "")} `
     : "";

@@ -3,7 +3,6 @@
 //   | "PROCESSING_INSTRUCTION_NODE"
 //   | "DOCUMENT_FRAGMENT_NODE";
 
-import { useConfig } from "../ConfigContext";
 import { classNames } from "../utils";
 import { TreeChildren } from "./TreeChildren";
 import { TreeComment } from "./TreeComment";
@@ -39,7 +38,7 @@ export function TypedNode({ node }: { node: Node }) {
 }
 
 export function TreeNode({ node, firstNode }: Props) {
-  const { ignoreEmptyTextNodes } = useConfig();
+  const ignoreEmptyTextNodes = false;
   const ignoreThisNode =
     ignoreEmptyTextNodes &&
     node.nodeType === node.TEXT_NODE &&
